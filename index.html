@@ -30,8 +30,23 @@
                         Has this ticket been resolved?
                     </label>
                 </div>
+<!-- New checkboxes -->
+<div class="flex items-center">
+    <input type="checkbox" id="ticketEscalated" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+    <label for="ticketEscalated" class="ml-2 block text-sm text-gray-900">
+        Has this ticket been Escalated?
+    </label>
+</div>
+
+<div class="flex items-center">
+    <input type="checkbox" id="ticketDispatched" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+    <label for="ticketDispatched" class="ml-2 block text-sm text-gray-900">Has this ticket been Dispatched?</label>
+</div>
+</div>
+
+<!-- /new checkboxes-->
             </div>
-        </div>
+        
         <div class="w-full md:w-1/2">
             <h2 class="text-2xl font-bold mb-4 text-indigo-600">Output</h2>
             <div id="output" class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 mb-4 p-2 h-64 overflow-y-auto bg-white"></div>
@@ -46,18 +61,32 @@
         const field2 = document.getElementById('field2');
         const field3 = document.getElementById('field3');
         const ticketResolved = document.getElementById('ticketResolved');
+        //new checkboxes constants
+        const ticketEscalated = document.getElementById('ticketEscalated');
+        const ticketDispatched = document.getElementById('ticketDispatched');
+        //new checkboxes constants
         const output = document.getElementById('output');
         const submitBtn = document.getElementById('submitBtn');
 
         function updateOutput() {
             const ticketStatus = ticketResolved.checked
-                ? "Ticket has been resolved"
-                : "Ticket remains open in the meantime";
+                ? "Closed"
+                : "Open";
+            const Escalated = ticketEscalated.checked
+                ? "Yes"
+                : "No";
+            const Dispatched = ticketDispatched.checked
+                ? "Yes"
+                : "No";
             
             const unsanitizedHtml = `<p><strong>Reason for the contact:</strong></p>${field1.value}
                                      <p><strong>Work done:</strong></p>${field2.value}
                                      <p><strong>Next steps:</strong></p>${field3.value}
-                                     <p><strong>Status:</strong></p> ${ticketStatus}`;
+                                     <p><strong>Status:</strong></p> ${ticketStatus}
+                                     <p><strong>Escalated?:</strong></p> ${Escalated}
+                                     <p><strong>Dispatched?:</strong></p> ${Dispatched}
+                                     
+                                     `;
             
             output.innerHTML = DOMPurify.sanitize(unsanitizedHtml);
         }
@@ -66,11 +95,20 @@
         field2.addEventListener('input', updateOutput);
         field3.addEventListener('input', updateOutput);
         ticketResolved.addEventListener('change', updateOutput);
+        ticketEscalated.addEventListener('change', updateOutput);
+        ticketDispatched.addEventListener('change', updateOutput);
 
         submitBtn.addEventListener('click', () => {
             const formattedHtml = output.innerHTML;
             const blob = new Blob([formattedHtml], {type: 'text/html'});
-            const item = `Reason for the contact:\n ${field1.value}\n\nWork done:\n ${field2.value}\n\nNext steps:\n ${field3.value}\n\nStatus:\n ${ticketResolved.checked ? "Ticket has been resolved" : "Ticket remains open in the meantime"}`;
+            const item = `
+            Reason for the contact:\n ${field1.value}\n\n
+            Work done:\n ${field2.value}\n\n
+            Next steps:\n ${field3.value}\n\n
+            Status:\n ${ticketResolved.checked ? "Closed" : "Open"}\n\n
+            Status:\n ${ticketEscalated.checked ? "Yes" : "No"}\n\n
+            Status:\n ${ticketDispatched.checked ? "Yes" : "No"}\n\n
+            `;
 
             navigator.clipboard.writeText(item).then(() => {
                 alert('Comment copied! You can now paste it where you need it');

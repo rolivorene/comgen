@@ -1,0 +1,14 @@
+Tabs
+	commentTab
+        div = commentGenerator
+                Label+textarea: contactReason
+                Label+textarea: workDone
+                Label+textarea: nextSteps
+                checkbox: ticketResolved
+            
+	firstContactTab
+        div = firstContact
+                Label+textarea:
+
+	recapTab
+        div = recap

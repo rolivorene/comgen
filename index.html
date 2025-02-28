@@ -3,211 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generator</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Comment generator</title>
     <style>
-        .hidden { display: none; }
-        .pre-line { white-space: pre-line; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .form-section, .output-section {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        select {
+            height: 35px;
+        }
+        .short-input {
+            height: 35px;
+        }
+        .output-box {
+            width: 100%;
+            min-height: 300px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        h2 {
+            color: #333;
+            margin-top: 0;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-6xl">
-        <!-- Tabs -->
-        <div class="flex border-b mb-6">
-            <button id="commentTab" class="text-indigo-600 py-2 px-4 font-semibold border-b-2 border-indigo-600">
-                Comment Generator
-            </button>
-            <button id="emailTab" class="text-gray-600 py-2 px-4 font-semibold hover:text-indigo-600">
-                Email Generator
-            </button>
-        </div>
-
-        <!-- Comment Generator Tab -->
-        <div id="commentGenerator" class="tab-content">
-            <div class="flex flex-col md:flex-row gap-8">
-                <div class="w-full md:w-1/2">
-                    <h2 class="text-2xl font-bold mb-4 text-indigo-600">Input Fields</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <label for="field1" class="block text-sm font-medium text-gray-700 mb-1">Reason for the contact</label>
-                            <textarea id="field1" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
-                        </div>
-                        <div>
-                            <label for="field2" class="block text-sm font-medium text-gray-700 mb-1">Work done</label>
-                            <textarea id="field2" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
-                        </div>
-                        <div>
-                            <label for="field3" class="block text-sm font-medium text-gray-700 mb-1">Next steps</label>
-                            <textarea id="field3" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="ticketResolved" class="h-4 w-4 text-indigo-600">
-                            <label for="ticketResolved" class="ml-2 block text-sm text-gray-900">Has this ticket been resolved?</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full md:w-1/2">
-                    <h2 class="text-2xl font-bold mb-4 text-indigo-600">Output</h2>
-                    <div id="output" class="block w-full rounded-md border p-4 h-64 overflow-y-auto bg-white whitespace-pre-line"></div>
-                    <button id="submitBtn" class="mt-4 w-full bg-indigo-600 text-white py-3 px-4 rounded-md">Copy to Clipboard</button>
-                </div>
+<body>
+    <div class="container">
+        <div class="form-section">
+            <h2>Call notes</h2>
+            <div class="form-group">
+                <label for="summary">Summary:</label>
+                <textarea id="summary" placeholder="Enter a summary..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="requestor">Requestor:</label>
+                <input type="text" id="requestor" class="short-input" placeholder="Enter requestor name...">
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category">
+                    <option value = "Software">Software</option>
+                    <option value = "Hardware">Hardware</option>
+                    <option value = "Cloud Account">Cloud Account</option>
+                    <option value = "Licensing">Licensing</option>
+                    <option value = "Network">Network</option>
+                    <option value = "Other">Other</option>
+                    </select>
+            </div>
+            <div class="form-group">
+                <label for="priority">Priority:</label>
+                <select id="priority">
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                    <option value="Urgent">Urgent</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="issueDescription">Issue Description:</label>
+                <textarea id="issueDescription" placeholder="Describe the issue..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="troubleshootingSteps">Troubleshooting Steps:</label>
+                <textarea id="troubleshootingSteps" placeholder="List troubleshooting steps..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="nextSteps">Next Steps:</label>
+                <textarea id="nextSteps" placeholder="List next steps..."></textarea>
             </div>
         </div>
-
-        <!-- Email Generator Tab -->
-        <div id="emailGenerator" class="tab-content hidden">
-            <div class="flex flex-col md:flex-row gap-8">
-                <div class="w-full md:w-1/2">
-                    <h2 class="text-2xl font-bold mb-4 text-indigo-600">Email Generator</h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="callSuccessful" class="h-4 w-4 text-indigo-600">
-                            <label for="callSuccessful" class="ml-2 block text-sm text-gray-900">Call Successful?</label>
-                        </div>
-                        <div>
-                            <label for="callerName" class="block text-sm font-medium text-gray-700 mb-1">Caller Name</label>
-                            <input type="text" id="callerName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label for="Agent" class="block text-sm font-medium text-gray-700 mb-1">Agent's name</label>
-                            <input type="text" id="agent" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                            <input type="text" id="phone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label for="issue" class="block text-sm font-medium text-gray-700 mb-1">Issue</label>
-                            <textarea id="issue" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
-                            
-                        </div>
-                        <div>
-                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                            <textarea id="message" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full md:w-1/2">
-                    <h2 class="text-2xl font-bold mb-4 text-indigo-600">Output</h2>
-                    <div id="emailOutput" class="block w-full rounded-md border p-4 h-64 overflow-y-auto bg-white pre-line"></div>
-                    <button id="copyEmailBtn" class="mt-4 w-full bg-indigo-600 text-white py-3 px-4 rounded-md">Copy to Clipboard</button>
-                </div>
+        <div class="output-section">
+            <h2>Comment</h2>
+            <div contenteditable="true" class="output-box" id="outputDisplay">
+                Fill in the notes to get a comment you can copy...
             </div>
+            <button id="submit-copy" class="button">Submit and Copy to Clipboard</button>
         </div>
     </div>
 
     <script>
-        const commentTab = document.getElementById('commentTab');
-        const emailTab = document.getElementById('emailTab');
-        const commentGenerator = document.getElementById('commentGenerator');
-        const emailGenerator = document.getElementById('emailGenerator');
-        
-        commentTab.addEventListener('click', () => {
-            commentGenerator.classList.remove('hidden');
-            emailGenerator.classList.add('hidden');
-            commentTab.classList.add('text-indigo-600', 'border-indigo-600');
-            emailTab.classList.remove('text-indigo-600', 'border-indigo-600');
-        });
+        // Function to format bullet points
+        function formatBulletPoints(text) {
+            if (!text) return '';
+            
+            // Split by new lines
+            const lines = text.split('\n');
+            let formattedText = '';
+            
+            lines.forEach(line => {
+                if (line.trim()) {
+                    // Check if line already has a bullet point
+                    if (line.trim().startsWith('•') || line.trim().startsWith('-')) {
+                        formattedText += line + '\n';
+                    } else {
+                        formattedText += '• ' + line + '\n';
+                    }
+                }
+            });
+            
+            return formattedText;
+        }
 
-        emailTab.addEventListener('click', () => {
-            emailGenerator.classList.remove('hidden');
-            commentGenerator.classList.add('hidden');
-            emailTab.classList.add('text-indigo-600', 'border-indigo-600');
-            commentTab.classList.remove('text-indigo-600', 'border-indigo-600');
-        });
-
-        // Comment Generator logic (Simplified output)
-        const field1 = document.getElementById('field1');
-        const field2 = document.getElementById('field2');
-        const field3 = document.getElementById('field3');
-        const ticketResolved = document.getElementById('ticketResolved');
-        const output = document.getElementById('output');
-        const submitBtn = document.getElementById('submitBtn');
-
+        // Function to update the output display
         function updateOutput() {
-            const ticketStatus = ticketResolved.checked ? "Closed" : "Open";
-            const outputText = `Reason for the contact:\n${field1.value}\n\nWork done:\n${field2.value}\n\nNext steps:\n${field3.value}\n\nStatus: ${ticketStatus}`;
-            output.textContent = outputText;
+            const summary = document.getElementById('summary').value;
+            const requestor = document.getElementById('requestor').value;
+            const category = document.getElementById('category').value;
+            const priority = document.getElementById('priority').value;
+            const issueDescription = document.getElementById('issueDescription').value;
+            const troubleshootingSteps = formatBulletPoints(document.getElementById('troubleshootingSteps').value);
+            const nextSteps = formatBulletPoints(document.getElementById('nextSteps').value);
+            
+            let output = '';
+            if (summary) output += `<strong>Summary:</strong> ${summary}\n\n`;
+            if (requestor) output += `<strong>Requestor:</strong> ${requestor}\n\n`;
+            if (category) output += `<strong>Category:</strong> ${category}\n\n`;
+            if (priority) output += `<strong>Priority:</strong> ${priority}\n\n`;
+            if (issueDescription) output += `<strong>Issue Description:</strong>\n${issueDescription}\n\n`;
+            if (troubleshootingSteps) output += `<strong>Troubleshooting Steps:</strong>\n${troubleshootingSteps}\n\n`;
+            if (nextSteps) output += `<strong>Next Steps:</strong>\n${nextSteps}\n\n`;
+            
+            // Replace newlines with <br> for HTML display
+            document.getElementById('outputDisplay').innerHTML = output.replace(/\n/g, '<br>');
         }
 
-        field1.addEventListener('input', updateOutput);
-        field2.addEventListener('input', updateOutput);
-        field3.addEventListener('input', updateOutput);
-        ticketResolved.addEventListener('change', updateOutput);
-
-        submitBtn.addEventListener('click', () => {
-            const outputText = output.textContent;
-            navigator.clipboard.writeText(outputText).then(() => {
-                alert('Comment copied!');
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
+        // Add event listeners to all inputs
+        document.getElementById('summary').addEventListener('input', updateOutput);
+        document.getElementById('requestor').addEventListener('input', updateOutput);
+        document.getElementById('category').addEventListener('input', updateOutput);
+        document.getElementById('priority').addEventListener('change', updateOutput);
+        document.getElementById('issueDescription').addEventListener('input', updateOutput);
+        document.getElementById('troubleshootingSteps').addEventListener('input', updateOutput);
+        document.getElementById('nextSteps').addEventListener('input', updateOutput);
+        
+        // Submit and copy to clipboard functionality
+        document.getElementById('submit-copy').addEventListener('click', function() {
+            const outputText = document.getElementById('outputDisplay').innerText;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(outputText).then(function() {
+                alert('Content copied to clipboard!');
+            }).catch(function(err) {
+                console.error('Could not copy text: ', err);
+                
+                // Fallback method
+                const textArea = document.createElement('textarea');
+                textArea.value = outputText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Content copied to clipboard!');
             });
         });
-
-        // Email Generator logic with line breaks
-        const callSuccessful = document.getElementById('callSuccessful');
-        const callerName = document.getElementById('callerName');
-        const agent = document.getElementById('agent');
-        const phone = document.getElementById('phone');
-        const issue = document.getElementById('issue');
-        const message = document.getElementById('message');
-        const emailOutput = document.getElementById('emailOutput');
-        const copyEmailBtn = document.getElementById('copyEmailBtn');
-
-        function updateEmailOutput() {
-            const callStatus = callSuccessful.checked 
-                ? 
-                `Hello ${callerName.value},
-
-Thank you for taking my call, as discussed over the phone we will continue working on ${issue.value}, to do so, ${message.value}
-
-Once again, thank you. I’m looking forward to finding a solution with you!
-
-Thank you.
-
-Best regards,
-${agent.value},
-Emperion IT Service Desk.`
-
-                : `Hello ${callerName.value},
-                
-I've tried to reach you at ${phone.value} without any success. 
-
-I would be happy to try contacting you again! If you would like me to do so, please confirm your phone number and the best time/date (including time zone) you would like me to reach out to you and I will do my best to make it happen!
-                 
-In regards to ${issue.value}, ${message.value}.
-
-I hope you can find this information useful and please make sure to reach out again, I will be more than happy to follow up with you!\n\n
-                
-Thank you.
-
-Best regards,
-${agent.value},
-Emperion IT Service Desk.`;
-
-            emailOutput.textContent = callStatus;
-        }
-
-        callSuccessful.addEventListener('change', updateEmailOutput);
-        agent.addEventListener('input', updateEmailOutput);
-        phone.addEventListener('input', updateEmailOutput);
-        callerName.addEventListener('input', updateEmailOutput);
-        issue.addEventListener('input', updateEmailOutput);
-        message.addEventListener('input', updateEmailOutput);
-
-        copyEmailBtn.addEventListener('click', () => {
-            const emailText = emailOutput.textContent;
-            navigator.clipboard.writeText(emailText).then(() => {
-                alert('Email copied!');
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-        });
-
-        // Initialize outputs
-        updateOutput();
-        updateEmailOutput();
     </script>
 </body>
 </html>

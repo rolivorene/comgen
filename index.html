@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comment generator</title>
-    <link rel="icon" type="image/x-icon" href="favicon.png">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -72,12 +71,22 @@
             cursor: pointer;
             border-radius: 4px;
         }
+        .clear-button {
+            background-color: #f44336;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
         h2 {
             color: #333;
             margin-top: 0;
         }
         .button:hover {
             background-color: #45a049;
+        }
+        .clear-button:hover {
+            background-color: #d32f2f;
         }
     </style>
 </head>
@@ -125,13 +134,16 @@
                 <label for="nextSteps">Next Steps:</label>
                 <textarea id="nextSteps" placeholder="List next steps..."></textarea>
             </div>
+            <div class="button-group">
+                <button id="clear-all" class="button clear-button">Clear All Fields</button>
+            </div>
         </div>
         <div class="output-section">
             <h2>Comment</h2>
             <div contenteditable="true" class="output-box" id="outputDisplay">
                 Fill in the notes to get a comment you can copy...
             </div>
-            <button id="submit-copy" class="button">Submit and Copy to Clipboard</button>
+            <button id="submit-copy" class="button">Copy to Clipboard</button>
         </div>
     </div>
 
@@ -181,6 +193,20 @@
             document.getElementById('outputDisplay').innerHTML = output.replace(/\n/g, '<br>');
         }
 
+        // Function to clear all form fields
+        function clearAllFields() {
+            document.getElementById('summary').value = '';
+            document.getElementById('requestor').value = '';
+            document.getElementById('category').selectedIndex = 0;
+            document.getElementById('priority').selectedIndex = 0;
+            document.getElementById('issueDescription').value = '';
+            document.getElementById('troubleshootingSteps').value = '';
+            document.getElementById('nextSteps').value = '';
+            
+            // Reset the output display
+            document.getElementById('outputDisplay').innerHTML = 'Fill in the notes to get a comment you can copy...';
+        }
+
         // Add event listeners to all inputs
         document.getElementById('summary').addEventListener('input', updateOutput);
         document.getElementById('requestor').addEventListener('input', updateOutput);
@@ -189,6 +215,9 @@
         document.getElementById('issueDescription').addEventListener('input', updateOutput);
         document.getElementById('troubleshootingSteps').addEventListener('input', updateOutput);
         document.getElementById('nextSteps').addEventListener('input', updateOutput);
+        
+        // Add event listener to the Clear All button
+        document.getElementById('clear-all').addEventListener('click', clearAllFields);
         
         // Submit and copy to clipboard functionality
         document.getElementById('submit-copy').addEventListener('click', function() {
@@ -209,6 +238,7 @@
                 document.body.removeChild(textArea);
                 alert('Content copied to clipboard!');
             });
+            
         });
     </script>
 </body>

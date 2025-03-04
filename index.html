@@ -98,6 +98,11 @@
                 <label for="summary">Summary:</label>
                 <textarea id="summary" placeholder="Enter a summary..."></textarea>
             </div>
+
+            <div>
+                <label for="number">Contact number:</label>
+                <input type="text" id="number" class="short-input" placeholder="Enter preferred contact number..."> 
+            </div>
             <div class="form-group">
                 <label for="requestor">Requestor:</label>
                 <input type="text" id="requestor" class="short-input" placeholder="Enter requestor name...">
@@ -173,6 +178,7 @@
         // Function to update the output display
         function updateOutput() {
             const summary = document.getElementById('summary').value;
+            const number = document.getElementById('number').value;
             const requestor = document.getElementById('requestor').value;
             const category = document.getElementById('category').value;
             const priority = document.getElementById('priority').value;
@@ -182,6 +188,7 @@
             
             let output = '';
             if (summary) output += `<strong>Summary:</strong> ${summary}\n\n`;
+            if (number) output += `<strong>Contact number:</strong> ${number}\n\n`;
             if (requestor) output += `<strong>Requestor:</strong> ${requestor}\n\n`;
             if (category) output += `<strong>Category:</strong> ${category}\n\n`;
             if (priority) output += `<strong>Priority:</strong> ${priority}\n\n`;
@@ -196,6 +203,7 @@
         // Function to clear all form fields
         function clearAllFields() {
             document.getElementById('summary').value = '';
+            document.getElementById('number').value = '';
             document.getElementById('requestor').value = '';
             document.getElementById('category').selectedIndex = 0;
             document.getElementById('priority').selectedIndex = 0;
@@ -209,6 +217,7 @@
 
         // Add event listeners to all inputs
         document.getElementById('summary').addEventListener('input', updateOutput);
+        document.getElementById('number').addEventListener('input', updateOutput);
         document.getElementById('requestor').addEventListener('input', updateOutput);
         document.getElementById('category').addEventListener('input', updateOutput);
         document.getElementById('priority').addEventListener('change', updateOutput);

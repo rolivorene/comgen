@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comment generator</title>
-    <link rel="icon" type="image/x-icon" href="rotom.png">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -95,9 +94,25 @@
     <div class="container">
         <div class="form-section">
             <h2>Call notes</h2>
+            
+            <div class="form-group">
+
+
+            </div>
+
+            <div class="form-group">
+                <label for="summary">Has this ticket been escalated:</label>
+                <input type="checkbox" id="escalated">
+            </div>
+
+            <div class="form-group">
+                <label for="related">Related ticket(s)</label>
+                <input type="text" id="related" class="short-input" placeholder="(Optional) Enter related ticket numbers..."></textarea>
+            </div>
+
             <div class="form-group">
                 <label for="summary">Summary:</label>
-                <textarea id="summary" placeholder="Enter a summary..."></textarea>
+                <input type="text" id="summary" class="short-input" placeholder="Enter a summary..."></textarea>
             </div>
 
             <div>
@@ -178,6 +193,8 @@
 
         // Function to update the output display
         function updateOutput() {
+            const escalated = document.getElementById('escalated').checked;
+            const related = document.getElementById('related').value;
             const summary = document.getElementById('summary').value;
             const number = document.getElementById('number').value;
             const requestor = document.getElementById('requestor').value;
@@ -188,6 +205,8 @@
             const nextSteps = formatBulletPoints(document.getElementById('nextSteps').value);
             
             let output = '';
+            if (escalated) output += `#escalated\n\n`;
+            if (related) output += `<strong>Related ticket(s):</strong> ${related}\n\n`;
             if (summary) output += `<strong>Summary:</strong> ${summary}\n\n`;
             if (number) output += `<strong>Contact number:</strong> ${number}\n\n`;
             if (requestor) output += `<strong>Requestor:</strong> ${requestor}\n\n`;
@@ -203,6 +222,8 @@
 
         // Function to clear all form fields
         function clearAllFields() {
+            document.getElementById('escalated').checked = false;
+            document.getElementById('related').value = '';
             document.getElementById('summary').value = '';
             document.getElementById('number').value = '';
             document.getElementById('requestor').value = '';
@@ -217,6 +238,8 @@
         }
 
         // Add event listeners to all inputs
+        document.getElementById('escalated').addEventListener('change', updateOutput);
+        document.getElementById('related').addEventListener('input', updateOutput);
         document.getElementById('summary').addEventListener('input', updateOutput);
         document.getElementById('number').addEventListener('input', updateOutput);
         document.getElementById('requestor').addEventListener('input', updateOutput);

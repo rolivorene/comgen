@@ -206,7 +206,7 @@
             const nextSteps = formatBulletPoints(document.getElementById('nextSteps').value);
             
             let output = '';
-            if (escalated) output += `#escalated\n\n`;
+            if (escalated) output += `#Escalation_Required\n\n`;
             if (related) output += `<strong>Related ticket(s):</strong> ${related}\n\n`;
             if (summary) output += `<strong>Summary:</strong> ${summary}\n\n`;
             if (number) output += `<strong>Contact number:</strong> ${number}\n\n`;
